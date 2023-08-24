@@ -19,6 +19,8 @@ import com.myblog.bloggingapp.Security.JwtTokenHelper;
 import com.myblog.bloggingapp.exceptions.ApiException;
 import com.myblog.bloggingapp.payloads.JwtAuthRequest;
 import com.myblog.bloggingapp.payloads.JwtAuthResponse;
+import com.myblog.bloggingapp.payloads.UserDto;
+import com.myblog.bloggingapp.services.UserService;
 
 
 @CrossOrigin(origins = "http://localhost:9090/api/auth/login")
@@ -32,6 +34,9 @@ public class AuthController {
     @Autowired
     private JwtTokenHelper jwtTokenHelper;
     
+    @Autowired
+    // this is for the register api
+    private UserService userService ;
     
     @Autowired
     private UserDetailsService userDetailsService;
@@ -76,5 +81,16 @@ public class AuthController {
 
 
         
+        
     }
+
+    // register new user api 
+        @PostMapping("/register")
+        public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto){
+            UserDto registered =  this.userService.registerNewUser(userDto);
+
+            return new ResponseEntity<UserDto>(registered, HttpStatus.CREATED);
+
+        }
+
 }
